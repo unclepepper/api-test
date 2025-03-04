@@ -44,8 +44,8 @@ init:
 copy-env:
 	cp .env .env.local
 
-csfix:
-	${CONTAINER_EXEC} ./vendor/bin/php-cs-fixer fix
+cs-fix:
+	${CONTAINER_EXEC} ./vendor/bin/php-cs-fixer fix src
 
 stan:
 	${CONTAINER_EXEC} vendor/bin/phpstan analyze -c phpstan.neon --memory-limit 2G src
