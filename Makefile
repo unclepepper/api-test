@@ -5,6 +5,10 @@ DOCKER="$(shell which docker)"
 CONTAINER_PHP="php-fpm"
 BLUE_BOLD=\e[1;34m
 
+init:
+	cp -n .env .env.local || true && \
+	make up && \
+	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} composer install --no-interaction
 
 
 alert-database:
@@ -27,20 +31,15 @@ bash:
 migrate-db:
 	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} bin/console doctrine:migrations:migrate -n --env=dev
 
+create-db:
+	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} bin/console doctrine:database:create --if-not-exists -n --env=dev
+
 logs:
 	${DOCKER_COMPOSE} logs -f
 
 ci:
 	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} composer install
 
-
-init:
-	cp -n .env .env.local || true && \
-	make up && \
-	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} composer install --no-interaction && \
-	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} bin/console doctrine:database:create --if-not-exists -n --env=dev && \
-	sleep 5 && \
-    ${DOCKER_COMPOSE} exec ${CONTAINER_PHP} bin/console doctrine:migrations:migrate -n --env=dev
 
 cs-fix:
 	${CONTAINER_EXEC} ./vendor/bin/php-cs-fixer fix src
