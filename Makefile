@@ -35,14 +35,12 @@ ci:
 
 
 init:
-	make copy-env && \
+	cp -n .env .env.local || true && \
 	make up && \
 	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} composer install --no-interaction && \
 	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} bin/console doctrine:database:create --if-not-exists -n --env=dev && \
+	sleep 5 && \
     ${DOCKER_COMPOSE} exec ${CONTAINER_PHP} bin/console doctrine:migrations:migrate -n --env=dev
-
-copy-env:
-	cp .env .env.local
 
 cs-fix:
 	${CONTAINER_EXEC} ./vendor/bin/php-cs-fixer fix src

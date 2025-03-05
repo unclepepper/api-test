@@ -28,7 +28,7 @@ final class UserPostController extends AbstractController
         $name  = $dto->getName();
 
         if (null !== $repository->getUserByEmail($email)) {
-            return new JsonResponse(['error' => "User $name already exists"], Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(['message' => "User $name already exists"], Response::HTTP_BAD_REQUEST);
         }
 
         try {
@@ -42,7 +42,7 @@ final class UserPostController extends AbstractController
 
         return new JsonResponse(
             [
-                'data' => sprintf('User %s whit email address: %s, was successfully created', $name, $email),
+                'message' => sprintf('User %s whit email address: %s, was successfully created', $name, $email),
             ],
             Response::HTTP_CREATED
         );

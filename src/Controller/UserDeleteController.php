@@ -23,7 +23,7 @@ final class UserDeleteController extends AbstractController
         $user = $repository->findById($id);
 
         if (null === $user) {
-            return new JsonResponse(['error' => "User with id: $id, not exist"], Response::HTTP_NOT_FOUND);
+            return new JsonResponse(['message' => "User with id: $id, not exist"], Response::HTTP_NOT_FOUND);
         }
 
         try {
@@ -32,6 +32,6 @@ final class UserDeleteController extends AbstractController
             return new JsonResponse($exception->getMessage(), Response::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse(['data' => "User with id: $id, was deleted"], Response::HTTP_OK, []);
+        return new JsonResponse(['message' => "User with id: $id, was deleted"], Response::HTTP_OK, []);
     }
 }
