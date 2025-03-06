@@ -16,7 +16,7 @@ init:
 	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} bin/console doctrine:migrations:migrate -n --env=dev && \
 	make alert-tests-start && \
 	sleep 1 && \
-	make tests-start
+	make test-start
 
 
 
@@ -66,7 +66,7 @@ stan-cc: ## Clear phpStan cache
 cc:
 	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} bin/console cache:clear
 
-tests-start:
+test-start:
 	make alert-database-test && \
 	sleep 1 && \
 	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} bin/console --if-not-exists -n --env=test doctrine:database:create && \
@@ -80,5 +80,5 @@ tests-debug:
 	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} vendor/bin/phpunit --debug
 
 fixture-load:
-	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} bin/console --env=test doctrine:fixtures:load
+	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} bin/console --env=test doctrine:fixtures:load --silent
 

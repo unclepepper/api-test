@@ -12,7 +12,7 @@
 ###< symfony/framework-bundle ###
 
 
-
+/.phpunit.cache
 
 ###> phpstan/phpstan ###
 phpstan.neon

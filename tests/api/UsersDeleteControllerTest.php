@@ -2,7 +2,6 @@
 
 namespace App\Tests\api;
 
-use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -21,6 +20,7 @@ class UsersDeleteControllerTest extends WebTestCase
 
         $client->request('DELETE', sprintf('%s/%d', self::URL, $testUser->getId()));
 
+        self::assertResponseIsSuccessful();
         self::assertEquals(200, $client->getResponse()->getStatusCode());
         self::assertJson($client->getResponse()->getContent());
 
