@@ -13,7 +13,7 @@ class UsersPostControllerTest extends WebTestCase
 {
     public const string URL = '/api/users';
 
-    public function testSomething(): void
+    public function testCreate(): void
     {
 
         $client = static::createClient();

@@ -9,7 +9,7 @@ class UsersDeleteControllerTest extends WebTestCase
 {
     public const string URL = '/api/users';
 
-    public function testSomething(): void
+    public function testDelete(): void
     {
 
         $client = static::createClient();
