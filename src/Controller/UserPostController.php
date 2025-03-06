@@ -33,7 +33,7 @@ final class UserPostController extends AbstractController
 
         try {
 
-            $userCreateService->create($dto);
+            $user = $userCreateService->create($dto);
 
         } catch (\Exception $exception) {
             return new JsonResponse(['error' => $exception], Response::HTTP_BAD_REQUEST);
@@ -42,7 +42,9 @@ final class UserPostController extends AbstractController
 
         return new JsonResponse(
             [
-                'message' => sprintf('User %s whit email address: %s, was successfully created', $name, $email),
+                'message' => "User $name successfully created",
+                'id'      => $user->getId(),
+                'email'   => $user->getEmail(),
             ],
             Response::HTTP_CREATED
         );
