@@ -17,25 +17,26 @@ services:
     volumes:
       - ./:/var/www/app
     depends_on:
-      - mysql
+      - database
 
-  mysql:
-    image: mysql:${MYSQL_VERSION:-8.0.30}
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD_ROOT}
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+  database:
+    image: postgres:${POSTGRES_VERSION:-16}-alpine
     ports:
-      - "3306:3306"
+      - 5432:5432
     volumes:
-      - ./data/mysql:/var/lib/mysql
-
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
+      - database:/var/lib/postgresql/data:rw
+      - ./docker/dev/db:/docker-entrypoint-database.d
     environment:
-      PMA_HOST: mysql
+      POSTGRES_DB: ${POSTGRES_DB:-database}
+      # You should definitely change the password in production
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pass_db}
+      POSTGRES_USER: ${POSTGRES_USER:-user_db}
+
+  adminer:
+    image: adminer
+    restart: always
     ports:
-      - "8080:80"
+      - 8080:8080
 
-
+volumes:
+  database: ~
