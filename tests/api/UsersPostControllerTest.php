@@ -26,9 +26,9 @@ class UsersPostControllerTest extends WebTestCase
                 'email' => 'test-post@test.com',
             ]
         );
-//        $this->assertResponseIsSuccessful();
-        $this->assertEquals(201, $client->getResponse()->getStatusCode());
-//        self::assertJson($client->getResponse()->getContent());
+        self::assertResponseIsSuccessful();
+        self::assertEquals(201, $client->getResponse()->getStatusCode());
+        self::assertJson($client->getResponse()->getContent());
 
     }
 
