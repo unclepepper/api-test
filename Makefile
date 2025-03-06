@@ -11,12 +11,11 @@ init:
 	make up && \
 	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} composer install --no-interaction && \
 	make alert-database && \
+	sleep 1 && \
 	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} bin/console doctrine:database:create --if-not-exists -n --env=dev && \
 	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} bin/console doctrine:migrations:migrate -n --env=dev && \
-	make alert-database-test && \
-	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} bin/console --env=test doctrine:database:create && \
-	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} bin/console --env=test doctrine:schema:create && \
 	make alert-tests-start && \
+	sleep 1 && \
 	make tests-start
 
 
@@ -68,8 +67,13 @@ cc:
 	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} bin/console cache:clear
 
 tests-start:
+	make alert-database-test && \
+	sleep 1 && \
+	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} bin/console --if-not-exists -n --env=test doctrine:database:create && \
+	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} bin/console  --env=test doctrine:schema:create && \
 	make fixture-load  || true && \
 	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} vendor/bin/phpunit
+	${DOCKER_COMPOSE} exec ${CONTAINER_PHP} bin/console  --env=test doctrine:database:drop --force
 
 tests-debug:
 	make fixture-load  || true && \
